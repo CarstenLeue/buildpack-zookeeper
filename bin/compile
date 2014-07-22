@@ -18,6 +18,13 @@ echo "BUILD_DIR = $BUILD_DIR"
 echo "APP_BUILD_DIR = $APP_BUILD_DIR"
 echo "CACHE_DIR = $CACHE_DIR"
 echo "ENV_DIR = $ENV_DIR"
+CACHED_DIRS=".heroku"
+
+# Static configurations for virtualenv caches.
+PROFILE_PATH="$BUILD_DIR/.profile.d/zk.sh"
+
+
+TMP_APP_DIR=$CACHE_DIR/tmp_app_dir
 
 # The ROOT_DIR is read only so we can't install dependencies in it
 # Move the ROOT_DIR contents to tmp and point ROOT_DIR to the new root
@@ -27,24 +34,74 @@ cp -r $ROOT_DIR $TMP_ROOT
 ROOT_DIR=$TMP_ROOT
 cd $ROOT_DIR
 
+# We'll need to send these statics to other scripts we `source`.
+export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
 
-# Setting up the zooKeeper location within the app directory
-zkDir="${BUILD_DIR}"/.zk
-zkTarball="${zkDir}"/zk.tar.gz
-zkUrl=http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
-mkdir -p "${zkDir}"
+# Syntax sugar.
+source $BIN_DIR/utils
 
+# Directory Hacks for path consistiency.
+APP_DIR='/app'
+TMP_APP_DIR=$CACHE_DIR/tmp_app_dir
+
+deep-rm $APP_DIR
+
+# Copy Application code in.
+deep-mv $BUILD_DIR $APP_DIR
+
+# Set new context.
+ORIG_BUILD_DIR=$BUILD_DIR
+BUILD_DIR=$APP_DIR
+
+# Prepend proper path buildpack use.
+export PATH=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH
+export ZOOKEEPER_INSTALL=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.5
+
+# Switch to the repo's context.
+cd $BUILD_DIR
+
+# ### The Cache
+mkdir -p $CACHE_DIR
+
+# Purge "old-style" virtualenvs.
+[ -d $CACHE_DIR/$LEGACY_TRIGGER ] && rm -fr $CACHE_DIR/.heroku/bin $CACHE_DIR/.heroku/lib $CACHE_DIR/.heroku/include
+[ -d $CACHE_DIR/$VIRTUALENV_LOC ] && rm -fr $CACHE_DIR/.heroku/venv $CACHE_DIR/.heroku/src
+
+set +e
+# Create set-aside `.heroku` folder.
+mkdir .heroku &> /dev/null
+set -e
+
+mkdir -p $(dirname $PROFILE_PATH)
+
+#Installing ZooKeeper
 
 echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz "
+# Prepare destination directory.
+mkdir -p .heroku/zookeeper
+curl http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz -s | tar zxv -C .heroku/zooKeeper &> /dev/null
+
+# Set context environment variables.
+set-env PATH '$HOME/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH'
+set-env ZOOKEEPER_INSTALL /app/.heroku/zookeeper/zookeeper-3.4.5/bin
+
+# Setting up the zooKeeper location within the app directory
+#zkDir="${BUILD_DIR}"/.zk
+#zkTarball="${zkDir}"/zk.tar.gz
+#zkUrl=http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+#mkdir -p "${zkDir}"
+
+
+
 
 #curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
-curl --silent --location ${zkUrl} --output ${zkTarball}
-tar pxzf ${zkTarball} -C "${zkDir}"
-rm ${zkTarball}
-echo "current directory location: $(pwd)" 
-echo "directory of ZK buildpack: ${zkDir}"
-echo "Files : $(ls ${zkDir})"
-
+#curl --silent --location ${zkUrl} --output ${zkTarball}
+#tar pxzf ${zkTarball} -C "${zkDir}"
+#rm ${zkTarball}
+#echo "current directory location: $(pwd)" 
+#echo "directory of ZK buildpack: ${zkDir}"
+#echo "Files : $(ls ${zkDir})"
+#echo ""
 # Export Path Variables
 #export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.5"
 #echo $ZOOKEEPER_INSTALL
