@@ -5,6 +5,7 @@
 set -eo pipefail
 
 BIN_DIR=$(cd $(dirname $0); pwd)
+ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 
 # parse args
@@ -17,6 +18,15 @@ echo "BUILD_DIR = $BUILD_DIR"
 echo "APP_BUILD_DIR = $APP_BUILD_DIR"
 echo "CACHE_DIR = $CACHE_DIR"
 echo "ENV_DIR = $ENV_DIR"
+
+# The ROOT_DIR is read only so we can't install dependencies in it
+# Move the ROOT_DIR contents to tmp and point ROOT_DIR to the new root
+TMP_ROOT=/tmp/buildpack
+rm -rf $TMP_ROOT
+cp -r $ROOT_DIR $TMP_ROOT
+ROOT_DIR=$TMP_ROOT
+cd $ROOT_DIR
+
 
 # Setting up the zooKeeper location within the app directory
 zkDir="${BUILD_DIR}"/.zk
@@ -36,8 +46,8 @@ echo "directory of ZK buildpack: ${zkDir}"
 echo "Files : $(ls ${zkDir})"
 
 # Export Path Variables
-export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.5"
-echo $ZOOKEEPER_INSTALL
-export PATH=$ZOOKEEPER_INSTALL/bin:$PATH
-echo $PATH
+#export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.5"
+#echo $ZOOKEEPER_INSTALL
+#export PATH=$ZOOKEEPER_INSTALL/bin:$PATH
+#echo $PATH
 echo "============================ZooKeeper Buildpack EOP==============================="
