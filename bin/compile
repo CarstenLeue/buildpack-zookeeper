@@ -22,4 +22,4 @@ echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.
 
 curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
 echo "current directory location: $(pwd)" 
-echo "Files : $(ls $1)"
+echo "Files : $(ls $(pwd))"
