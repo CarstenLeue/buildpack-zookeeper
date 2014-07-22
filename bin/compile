@@ -86,6 +86,7 @@ echo "Downloaded and copied"
 set-env PATH '$HOME/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH'
 set-env ZOOKEEPER_INSTALL /app/.heroku/zookeeper/zookeeper-3.4.5/bin
 
+echo $PATH
 # Setting up the zooKeeper location within the app directory
 #zkDir="${BUILD_DIR}"/.zk
 #zkTarball="${zkDir}"/zk.tar.gz
