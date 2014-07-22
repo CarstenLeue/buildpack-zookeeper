@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# sample buildpack to install and configure ZooKeeper 3.4.5
+
+set -eo pipefail
+
+BIN_DIR=$(cd $(dirname $0); pwd)
+BUILD_DIR=$1
+
+# parse args
+APP_BUILD_DIR=$(cd $1; pwd)
+CACHE_DIR=$2
+ENV_DIR=$3
+
+echo "BIN_DIR = $BIN_DIR"
+echo "BUILD_DIR = $BUILD_DIR"
+echo "APP_BUILD_DIR = $APP_BUILD_DIR"
+echo "CACHE_DIR = $CACHE_DIR"
+echo "ENV_DIR = $ENV_DIR"
