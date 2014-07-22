@@ -17,3 +17,9 @@ echo "BUILD_DIR = $BUILD_DIR"
 echo "APP_BUILD_DIR = $APP_BUILD_DIR"
 echo "CACHE_DIR = $CACHE_DIR"
 echo "ENV_DIR = $ENV_DIR"
+
+echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz "
+
+curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
+echo "current directory location: $(pwd)" 
+echo "Files : $(ls $1)""
