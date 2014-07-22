@@ -35,5 +35,9 @@ echo "current directory location: $(pwd)"
 echo "directory of ZK buildpack: ${zkDir}"
 echo "Files : $(ls ${zkDir})"
 
-
+# Export Path Variables
+export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.5"
+echo $ZOOKEEPER_INSTALL
+export PATH=$ZOOKEEPER_INSTALL/bin:$PATH
+echo $PATH
 echo "============================ZooKeeper Buildpack EOP==============================="
