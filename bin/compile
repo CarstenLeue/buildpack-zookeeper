@@ -18,8 +18,22 @@ echo "APP_BUILD_DIR = $APP_BUILD_DIR"
 echo "CACHE_DIR = $CACHE_DIR"
 echo "ENV_DIR = $ENV_DIR"
 
+# Setting up the zooKeeper location within the app directory
+zkDir="${BUILD_DIR}"/.zk
+zkTarball="${zkDir}"/zk.tar.gz
+zkUrl=http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+mkdir -p "${zkDir}"
+
+
 echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz "
 
-curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
+#curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
+curl --silent --location ${zkUrl} --output ${zkTarball}
+tar pxzf ${zkTarball} -C "${zkDir}"
+rm ${zkTarball}
 echo "current directory location: $(pwd)" 
-echo "Files : $(ls $(pwd))"
+echo "directory of ZK buildpack: ${zkDir}"
+echo "Files : $(ls ${zkDir})"
+
+
+echo "============================ZooKeeper Buildpack EOP==============================="
