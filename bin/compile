@@ -74,13 +74,14 @@ set -e
 
 mkdir -p $(dirname $PROFILE_PATH)
 
+echo "current directory location: $(pwd)" 
 #Installing ZooKeeper
-
 echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz "
 # Prepare destination directory.
 mkdir -p .heroku/zookeeper
-curl http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz -s | tar zxv -C .heroku/zooKeeper &> /dev/null
+curl http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz -s | tar zxv -C .heroku/zookeeper &> /dev/null
 
+echo "Downloaded and copied"
 # Set context environment variables.
 set-env PATH '$HOME/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH'
 set-env ZOOKEEPER_INSTALL /app/.heroku/zookeeper/zookeeper-3.4.5/bin
