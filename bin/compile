@@ -2,6 +2,8 @@
 
 # sample buildpack to install and configure ZooKeeper 3.4.7
 
+echo "Carsten"
+
 set -eo pipefail
 
 echo $0
