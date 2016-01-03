@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Detect ..."
+
 if [ -f $1/.zoo ]; then
   echo "ZooKeeper"
   exit 0
