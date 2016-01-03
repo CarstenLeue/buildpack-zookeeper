@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# sample buildpack to install and configure ZooKeeper 3.4.5
+# sample buildpack to install and configure ZooKeeper 3.4.7
 
 set -eo pipefail
 
@@ -56,8 +56,8 @@ ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 
 # Prepend proper path buildpack use.
-export PATH=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH
-export ZOOKEEPER_INSTALL=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.5
+export PATH=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.7/bin:$PATH
+export ZOOKEEPER_INSTALL=$BUILD_DIR/.heroku/zookeeper/zookeeper-3.4.7
 
 # Switch to the repo's context.
 cd $BUILD_DIR
@@ -78,27 +78,27 @@ mkdir -p $(dirname $PROFILE_PATH)
 
 echo "current directory location: $(pwd)" 
 #Installing ZooKeeper
-echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz "
+echo "copying from the ZooKeeper download directory - http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz "
 # Prepare destination directory.
 mkdir -p .heroku/zookeeper
-curl http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz -s | tar zxv -C .heroku/zookeeper &> /dev/null
+curl http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz -s | tar zxv -C .heroku/zookeeper &> /dev/null
 
 echo "Downloaded and copied"
 # Set context environment variables.
-set-env PATH '$HOME/.heroku/zookeeper/zookeeper-3.4.5/bin:$PATH'
-set-env ZOOKEEPER_INSTALL /app/.heroku/zookeeper/zookeeper-3.4.5/bin
+set-env PATH '$HOME/.heroku/zookeeper/zookeeper-3.4.7/bin:$PATH'
+set-env ZOOKEEPER_INSTALL /app/.heroku/zookeeper/zookeeper-3.4.7/bin
 
 echo $PATH
 # Setting up the zooKeeper location within the app directory
 #zkDir="${BUILD_DIR}"/.zk
 #zkTarball="${zkDir}"/zk.tar.gz
-#zkUrl=http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz
+#zkUrl=http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz
 #mkdir -p "${zkDir}"
 
 
 
 
-#curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar xz
+#curl --silent --location http://apache.mirrors.tds.net/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz | tar xz
 #curl --silent --location ${zkUrl} --output ${zkTarball}
 #tar pxzf ${zkTarball} -C "${zkDir}"
 #rm ${zkTarball}
@@ -107,7 +107,7 @@ echo $PATH
 #echo "Files : $(ls ${zkDir})"
 #echo ""
 # Export Path Variables
-#export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.5"
+#export ZOOKEEPER_INSTALL="${zkDir}/zookeeper-3.4.7"
 #echo $ZOOKEEPER_INSTALL
 #export PATH=$ZOOKEEPER_INSTALL/bin:$PATH
 #echo $PATH
